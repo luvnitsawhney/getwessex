@@ -1,0 +1,1806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Wessex · West Cliff · Private Sale</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://api.mapbox.com/mapbox-gl-js/v3.4.0/mapbox-gl.css" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1a1a2e;
+    --navy-deep: #13131f;
+    --cream: #c9b99a;
+    --cream-soft: #d8cbb1;
+    --cream-bg: #f4efe6;
+    --olive: #2d2d1a;
+    --ink: #0d0d18;
+    --line: rgba(201,185,154,.35);
+    --line-strong: rgba(201,185,154,.6);
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font-family: 'Jost', system-ui, sans-serif;
+    font-weight: 300;
+    color: var(--navy);
+    background: var(--cream-bg);
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.55;
+    font-size: 16px;
+  }
+  img { max-width: 100%; display: block; }
+  button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+  input, select, textarea { font-family: inherit; font-size: 16px; }
+
+  .eyebrow {
+    font-family: 'Jost', sans-serif;
+    font-size: 12px;
+    letter-spacing: .32em;
+    text-transform: uppercase;
+    color: var(--cream);
+    font-weight: 400;
+  }
+  .eyebrow.on-light { color: #8a7a52; }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 32px; }
+  section { padding: 6rem 0; }
+  @media (max-width: 720px) {
+    section { padding: 4rem 0; }
+    .wrap { padding: 0 22px; }
+  }
+
+  /* ============ NAV ============ */
+  .nav {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(244,239,230,.92);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav-inner {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 32px; max-width: 1180px; margin: 0 auto;
+    gap: 16px;
+  }
+  .logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px; font-weight: 500; letter-spacing: .02em;
+    color: var(--navy);
+  }
+  .logo .dot { color: var(--cream); margin: 0 .35em; font-weight: 400; }
+  .logo-location { white-space: nowrap; }
+  .logo .sub {
+    font-family: 'Jost', sans-serif; font-size: 11px; letter-spacing: .28em;
+    text-transform: uppercase; color: #7a7a8a; font-weight: 400;
+    margin-left: 10px; border-left: 1px solid var(--line); padding-left: 10px;
+  }
+  .nav-cta {
+    background: var(--navy); color: var(--cream);
+    font-family: 'Jost', sans-serif; font-size: 12px; letter-spacing: .22em;
+    text-transform: uppercase; font-weight: 400;
+    padding: 14px 22px;
+    border: 1px solid var(--navy);
+    text-decoration: none;
+    display: inline-block;
+    transition: background .25s ease, color .25s ease;
+    position: relative;
+  }
+  .nav-cta::after {
+    content: "→"; display: inline-block; margin-left: 8px;
+    transition: transform .3s cubic-bezier(.2,.7,.2,1);
+  }
+  .nav-cta:hover { background: var(--cream); color: var(--navy); border-color: var(--cream); }
+  .nav-cta:hover::after { transform: translateX(4px); }
+  @media (max-width: 720px) {
+    .nav-inner { padding: 14px 20px; gap: 12px; }
+    .logo { font-size: 18px; white-space: nowrap; }
+    .logo .sub { display: none; }
+    .nav-cta { padding: 11px 14px; font-size: 10px; letter-spacing: .14em; white-space: nowrap; }
+  }
+  @media (max-width: 520px) {
+    .logo { font-size: 16px; }
+    .logo-location { display: none; }
+    .nav-cta { padding: 10px 13px; }
+  }
+
+  /* ============ HERO ============ */
+  .hero {
+    background: var(--navy);
+    color: var(--cream-soft);
+    padding: 7rem 0;
+    position: relative;
+    border-bottom: 1px solid rgba(201,185,154,.18);
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .hero-bg {
+    position: absolute; inset: 0; z-index: -2;
+    background-image: url('images/9bf53580-8c0a-4bc9-9e05-b91f4709f547.jpeg');
+    background-size: cover;
+    background-position: center 60%;
+    transform: scale(1.04);
+    filter: saturate(.85);
+  }
+  .hero-bg::after {
+    content: ""; position: absolute; inset: 0;
+    background:
+      linear-gradient(180deg, rgba(13,13,24,.7) 0%, rgba(13,13,24,.55) 40%, rgba(13,13,24,.78) 100%),
+      linear-gradient(90deg, rgba(13,13,24,.78) 0%, rgba(13,13,24,.35) 55%, rgba(13,13,24,.45) 100%);
+  }
+  .hero::before {
+    content: ""; position: absolute; inset: 24px;
+    border: 1px solid rgba(201,185,154,.28); pointer-events: none; z-index: 1;
+  }
+  .hero .wrap { position: relative; z-index: 2; }
+  .badge {
+    display: inline-flex; align-items: center; gap: 10px;
+    border: 1px solid var(--cream);
+    color: var(--cream);
+    font-size: 11px; letter-spacing: .32em; text-transform: uppercase;
+    padding: 9px 18px;
+    margin-bottom: 36px;
+    opacity: 0; transform: translateY(14px);
+    animation: heroIn .9s .05s cubic-bezier(.2,.7,.2,1) forwards;
+  }
+  .badge .pip {
+    width: 5px; height: 5px; background: var(--cream); border-radius: 50%; display: inline-block;
+    animation: pipPulse 2.6s ease-in-out infinite;
+  }
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-size: clamp(44px, 7.2vw, 96px);
+    line-height: 1.02;
+    letter-spacing: -.01em;
+    margin: 0 0 28px;
+    color: #f1e9d6;
+    max-width: 14ch;
+    opacity: 0; transform: translateY(14px);
+    animation: heroIn .9s .18s cubic-bezier(.2,.7,.2,1) forwards;
+  }
+  .hero h1 em { font-style: italic; color: var(--cream); font-weight: 500; }
+  .hero p.lede {
+    max-width: 54ch;
+    font-size: 17px; line-height: 1.7;
+    color: #c8c4b8; font-weight: 300;
+    margin: 0 0 56px;
+    opacity: 0; transform: translateY(14px);
+    animation: heroIn .9s .32s cubic-bezier(.2,.7,.2,1) forwards;
+  }
+  .rare-find {
+    display: inline-flex; align-items: center; gap: 12px;
+    border: 1px solid var(--cream);
+    background: rgba(201,185,154,.05);
+    padding: 9px 16px 9px 12px;
+    margin: 0 0 40px;
+    position: relative;
+    transform: translateY(8px);
+    opacity: 0;
+    animation: rfIn .9s .5s cubic-bezier(.2,.7,.2,1) forwards;
+  }
+  .rf-gem {
+    width: 30px; height: 30px;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    position: relative;
+  }
+  .rf-gem svg {
+    width: 18px; height: 18px; stroke: var(--cream); fill: none;
+    stroke-width: 1.4; stroke-linejoin: round; stroke-linecap: round;
+    transform-origin: 50% 50%;
+    animation: rfGemBreathe 2.8s ease-in-out infinite;
+  }
+  .rf-gem::before,
+  .rf-gem::after,
+  .rf-spark {
+    content: ""; position: absolute; background: var(--cream);
+    width: 3px; height: 3px; border-radius: 50%;
+    opacity: 0;
+  }
+  .rf-gem::before {
+    top: 0; right: -1px;
+    animation: rfSparkle 2.4s 0s ease-in-out infinite;
+  }
+  .rf-gem::after {
+    bottom: 1px; left: -2px; width: 2.5px; height: 2.5px;
+    animation: rfSparkle 2.4s .8s ease-in-out infinite;
+  }
+  .rf-spark {
+    top: 50%; right: -4px; width: 2px; height: 2px;
+    animation: rfSparkle 2.4s 1.6s ease-in-out infinite;
+  }
+  .rf-copy { display: flex; flex-direction: column; line-height: 1; }
+  .rf-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 15px; font-weight: 600; font-style: italic;
+    color: var(--cream); letter-spacing: .015em; line-height: 1; margin-bottom: 4px;
+  }
+  .rf-sub { font-size: 11px; color: #9a917a; letter-spacing: .04em; line-height: 1.35; }
+  .hero-foot {
+    display: flex; align-items: flex-end; justify-content: space-between; gap: 32px;
+    padding-top: 36px; border-top: 1px solid rgba(201,185,154,.22);
+    flex-wrap: wrap;
+    opacity: 0; transform: translateY(14px);
+    animation: heroIn .9s .68s cubic-bezier(.2,.7,.2,1) forwards;
+  }
+  .price-label { font-size: 11px; letter-spacing: .3em; text-transform: uppercase; color: #9a917a; }
+  .price {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(40px, 5.5vw, 64px);
+    color: var(--cream);
+    line-height: 1;
+    margin-top: 6px;
+    font-weight: 500;
+  }
+  .hero-meta { text-align: right; font-size: 13px; letter-spacing: .18em; text-transform: uppercase; color: #9a917a; }
+  .hero-meta strong { color: var(--cream); font-weight: 400; display: block; margin-top: 4px; letter-spacing: .22em; }
+  @media (max-width: 720px) {
+    .hero { padding: 5rem 0; }
+    .hero::before { inset: 14px; }
+    .hero-meta { text-align: left; }
+    .hero p.lede { margin-bottom: 40px; }
+  }
+  @media (max-width: 560px) {
+    .rare-find { padding: 8px 14px 8px 10px; gap: 10px; margin-bottom: 32px; }
+    .rf-title { font-size: 14px; }
+    .rf-sub { font-size: 10.5px; }
+  }
+
+  /* ============ STATS BAR ============ */
+  .stats { background: var(--cream); color: var(--navy); padding: 0; }
+  .stats-grid {
+    display: grid; grid-template-columns: repeat(6,1fr);
+    max-width: 1180px; margin: 0 auto;
+  }
+  .stat {
+    padding: 34px 18px;
+    text-align: center;
+    border-right: 1px solid rgba(26,26,46,.18);
+  }
+  .stat:last-child { border-right: none; }
+  .stat .num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(24px, 2.4vw, 34px);
+    line-height: 1; font-weight: 500; margin-bottom: 8px;
+    transition: transform .4s cubic-bezier(.2,.7,.2,1);
+  }
+  .stat:hover .num { transform: translateY(-3px); }
+  .stat .lbl { font-size: 10px; letter-spacing: .24em; text-transform: uppercase; color: #4a3f24; font-weight: 400; }
+  @media (max-width: 960px) {
+    .stats-grid { grid-template-columns: repeat(3,1fr); }
+    .stat { border-bottom: 1px solid rgba(26,26,46,.18); padding: 28px 14px; border-right: 1px solid rgba(26,26,46,.18); }
+    .stat:nth-child(3n) { border-right: none; }
+    .stat:nth-child(4),.stat:nth-child(5),.stat:nth-child(6) { border-bottom: none; }
+  }
+  @media (max-width: 560px) {
+    .stats-grid { grid-template-columns: repeat(2,1fr); }
+    .stat { padding: 22px 12px; border-right: 1px solid rgba(26,26,46,.18); border-bottom: 1px solid rgba(26,26,46,.18); }
+    .stat:nth-child(even) { border-right: none; }
+    .stat:nth-child(5),.stat:nth-child(6) { border-bottom: none; }
+  }
+
+  /* ============ PROPERTY ============ */
+  .property { background: var(--cream-bg); }
+  .prop-head {
+    display: grid; grid-template-columns: 1fr 1.4fr; gap: 80px;
+    align-items: start; margin-bottom: 64px;
+  }
+  .prop-head h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(34px, 4.4vw, 56px);
+    line-height: 1.08; font-weight: 400; color: var(--navy);
+    margin: 18px 0 0; letter-spacing: -.005em;
+  }
+  .prop-head .body {
+    font-size: 16px; line-height: 1.8; color: #3d3d4f; font-weight: 300;
+    border-left: 1px solid var(--line-strong);
+    padding-left: 32px;
+  }
+  .prop-head .body p + p { margin-top: 14px; }
+
+  .pills { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
+  .pill {
+    display: inline-flex; align-items: center; gap: 8px;
+    border: 1px solid var(--cream);
+    color: var(--navy);
+    background: transparent;
+    padding: 9px 16px; border-radius: 999px;
+    font-size: 12px; letter-spacing: .12em; text-transform: uppercase; font-weight: 400;
+    transition: background .25s ease, color .25s ease;
+  }
+  .pill::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: var(--cream); display: inline-block; }
+  .pill:hover { background: var(--cream); color: var(--navy); }
+  .pill:hover::before { background: var(--navy); }
+
+  .features {
+    display: grid; grid-template-columns: repeat(2,1fr); gap: 0;
+    border-top: 1px solid var(--line);
+  }
+  .feature {
+    display: flex; align-items: flex-start; gap: 24px;
+    padding: 36px 32px 36px 0;
+    border-bottom: 1px solid var(--line);
+    transition: background .35s ease;
+  }
+  .feature:nth-child(odd) { padding-right: 48px; border-right: 1px solid var(--line); }
+  .feature:nth-child(even) { padding-left: 48px; }
+  .feature .ico {
+    width: 56px; height: 56px; border-radius: 50%;
+    background: var(--navy);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    transition: transform .5s cubic-bezier(.2,.7,.2,1), background .3s ease;
+  }
+  .feature:hover .ico { transform: scale(1.07) rotate(-4deg); }
+  .feature .ico svg { width: 24px; height: 24px; stroke: var(--cream); fill: none; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
+  .feature h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 23px; font-weight: 500; margin: 6px 0 6px; color: var(--navy); line-height: 1.2;
+  }
+  .feature:hover h3 { color: #2a2a45; }
+  .feature p { font-size: 14px; color: #5a5a6a; margin: 0; line-height: 1.6; }
+  @media (max-width: 820px) {
+    .prop-head { grid-template-columns: 1fr; gap: 36px; }
+    .prop-head .body { padding-left: 22px; }
+    .features { grid-template-columns: 1fr; }
+    .feature, .feature:nth-child(odd), .feature:nth-child(even) { padding: 28px 0; border-right: none; }
+  }
+
+  /* ============ GALLERY ============ */
+  .gallery { background: var(--navy); color: var(--cream-soft); }
+  .gallery-head {
+    display: flex; align-items: flex-end; justify-content: space-between; gap: 24px;
+    margin-bottom: 48px; flex-wrap: wrap;
+  }
+  .gallery-head h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(34px, 4.4vw, 52px);
+    font-weight: 400; color: #f1e9d6; margin: 14px 0 0; line-height: 1.08;
+  }
+  .gallery-head .note { font-size: 12px; letter-spacing: .18em; text-transform: uppercase; color: #9a917a; }
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr 1fr;
+    grid-template-rows: 240px 240px 240px;
+    gap: 14px;
+  }
+  .g {
+    position: relative; overflow: hidden;
+    background: #23233a;
+    border: 1px solid rgba(201,185,154,.18);
+  }
+  .g.tall { grid-row: 1 / span 2; }
+  .g img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .g-caption {
+    position: absolute; left: 14px; bottom: 12px;
+    font-size: 10px; letter-spacing: .26em; text-transform: uppercase; color: #7a7590;
+    background: rgba(19,19,31,.6); padding: 6px 10px;
+  }
+  @media (max-width: 820px) {
+    .gallery-grid {
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: none;
+      grid-auto-rows: 200px;
+    }
+    .g.tall { grid-row: auto; grid-column: 1 / span 2; height: 220px; }
+  }
+  @media (max-width: 480px) {
+    .gallery-grid {
+      grid-template-columns: 1fr;
+      grid-template-rows: none;
+      grid-auto-rows: 200px;
+    }
+    .g { height: 200px; }
+    .g.tall { grid-column: auto; height: 240px; grid-auto-rows: 240px; }
+  }
+
+  /* ============ INVESTMENT ============ */
+  .invest { background: var(--olive); color: #e2dcc4; }
+  .invest-inner {
+    display: grid; grid-template-columns: 1fr 1.2fr; gap: 80px; align-items: center;
+  }
+  .yield { text-align: left; }
+  .yield .num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(72px, 11vw, 144px);
+    line-height: .9; color: var(--cream); font-weight: 500; letter-spacing: -.02em;
+  }
+  .yield .num .tilde { font-style: italic; font-weight: 400; margin-right: .05em; }
+  .yield h2 {
+    font-family: 'Cormorant Garamond', serif; font-size: clamp(28px, 3.4vw, 40px);
+    font-weight: 400; color: #f1e9d6; margin: 22px 0 12px; line-height: 1.15;
+  }
+  .yield p { color: #a8a48c; font-size: 15px; max-width: 38ch; margin: 0; }
+  .ipoints { display: grid; grid-template-columns: 1fr 1fr; gap: 28px 32px; }
+  .ipoint {
+    border-left: 2px solid var(--cream);
+    padding: 6px 0 8px 22px;
+  }
+  .ipoint h4 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px; font-weight: 500; margin: 0 0 6px; color: #f1e9d6; line-height: 1.2;
+  }
+  .ipoint p { font-size: 14px; line-height: 1.6; color: #a8a48c; margin: 0; }
+  @media (max-width: 820px) {
+    .invest-inner { grid-template-columns: 1fr; gap: 48px; }
+    .ipoints { gap: 24px; }
+  }
+  @media (max-width: 520px) { .ipoints { grid-template-columns: 1fr; } }
+
+  /* ============ CALCULATORS ============ */
+  .calc { background: var(--cream-bg); border-top: 1px solid var(--line); }
+  .calc-head { text-align: center; margin-bottom: 48px; }
+  .calc-head h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(34px,4.4vw,52px); font-weight: 400; color: var(--navy);
+    margin: 14px 0 8px; line-height: 1.08; letter-spacing: -.005em;
+  }
+  .calc-head h2 em { font-style: italic; color: #8a7a52; font-weight: 500; }
+  .calc-head p { font-size: 13px; letter-spacing: .06em; color: #5a5a6a; max-width: 48ch; margin: 0 auto; }
+  .calc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .calc-card {
+    background: #fbf8f1;
+    border: 1px solid var(--line-strong);
+    padding: 40px 36px 32px;
+    position: relative;
+  }
+  .calc-card .ctitle {
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
+    border-bottom: 1px solid var(--line); padding-bottom: 18px; margin-bottom: 26px;
+  }
+  .calc-card h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px; font-weight: 500; color: var(--navy); margin: 0; line-height: 1.1;
+  }
+  .calc-card .csub { font-size: 11px; letter-spacing: .28em; text-transform: uppercase; color: #8a7a52; margin-top: 6px; }
+  .calc-card .ctitle .cicon {
+    width: 44px; height: 44px; border-radius: 50%; background: var(--navy);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .calc-card .cicon svg { width: 20px; height: 20px; stroke: var(--cream); fill: none; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
+  .crow { display: grid; grid-template-columns: 1fr; gap: 18px; margin-bottom: 8px; }
+  .crow.split { grid-template-columns: 1fr 1fr; gap: 18px; }
+  .cfield label {
+    display: flex; align-items: baseline; justify-content: space-between;
+    font-size: 10px; letter-spacing: .28em; text-transform: uppercase; color: #5a5a6a; margin-bottom: 8px; font-weight: 400;
+  }
+  .cfield label .val {
+    font-family: 'Cormorant Garamond', serif; font-style: italic;
+    font-size: 18px; color: var(--navy); letter-spacing: .01em; text-transform: none; font-weight: 500;
+  }
+  .cfield input[type="range"] {
+    -webkit-appearance: none; appearance: none;
+    width: 100%; height: 2px; background: rgba(26,26,46,.18); outline: none;
+    margin: 4px 0 0;
+  }
+  .cfield input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none; appearance: none;
+    width: 16px; height: 16px; border-radius: 50%; background: var(--navy);
+    border: 2px solid #fbf8f1;
+    box-shadow: 0 0 0 1px var(--navy);
+    cursor: pointer;
+  }
+  .cfield input[type="range"]::-moz-range-thumb {
+    width: 16px; height: 16px; border-radius: 50%; background: var(--navy);
+    border: 2px solid #fbf8f1; box-shadow: 0 0 0 1px var(--navy); cursor: pointer;
+  }
+  .cradio {
+    display: flex; flex-wrap: wrap; gap: 0;
+    border: 1px solid rgba(26,26,46,.18);
+  }
+  .cradio label {
+    flex: 1 1 0; min-width: 0; cursor: pointer;
+    text-align: center; padding: 10px 8px;
+    font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: #5a5a6a;
+    border-right: 1px solid rgba(26,26,46,.12);
+    transition: background .2s ease, color .2s ease;
+    line-height: 1.3;
+    margin-bottom: 0;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .cradio label:last-child { border-right: none; }
+  .cradio input { position: absolute; opacity: 0; pointer-events: none; }
+  .cradio label:has(input:checked) { background: var(--navy); color: var(--cream); }
+  .cradio label:hover { background: rgba(26,26,46,.06); }
+  .cradio label:has(input:checked):hover { background: var(--navy); }
+  .cresult {
+    margin-top: 28px; padding: 24px 0 4px;
+    border-top: 1px solid var(--line);
+    display: grid; grid-template-columns: 1fr auto; gap: 14px; align-items: end;
+  }
+  .cresult .rlbl { font-size: 11px; letter-spacing: .28em; text-transform: uppercase; color: #8a7a52; margin-bottom: 6px; }
+  .cresult .rval {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(36px,4vw,52px); line-height: 1; color: var(--navy); font-weight: 500;
+    letter-spacing: -.01em;
+  }
+  .cresult .rval .currency { font-size: .55em; vertical-align: .2em; margin-right: .04em; color: #8a7a52; }
+  .cresult .rside { text-align: right; font-size: 12px; color: #5a5a6a; line-height: 1.55; }
+  .cresult .rside .rs-num {
+    font-family: 'Cormorant Garamond', serif; font-size: 20px; color: var(--navy); display: block; font-weight: 500; letter-spacing: .01em;
+  }
+  .cbreakdown {
+    margin-top: 18px; padding-top: 14px; border-top: 1px dashed rgba(26,26,46,.12);
+    font-size: 11px; letter-spacing: .04em; color: #5a5a6a; line-height: 1.8;
+  }
+  .cbreakdown .brow { display: flex; justify-content: space-between; gap: 8px; }
+  .cbreakdown .brow span:first-child { color: #7a7a8a; }
+  .cbreakdown .brow.tot { margin-top: 6px; padding-top: 8px; border-top: 1px solid rgba(26,26,46,.12); font-weight: 500; color: var(--navy); text-transform: uppercase; letter-spacing: .18em; font-size: 10px; }
+  .cnote { margin-top: 18px; font-size: 10px; letter-spacing: .12em; color: #9a917a; text-align: center; text-transform: uppercase; }
+  @media (max-width: 820px) {
+    .calc-grid { grid-template-columns: 1fr; gap: 18px; }
+    .calc-card { padding: 32px 24px 24px; }
+    .cresult { grid-template-columns: 1fr; }
+    .cresult .rside { text-align: left; }
+  }
+
+  /* ============ LOCATION ============ */
+  .location {
+    background: var(--navy); color: var(--cream-soft);
+    padding: 6rem 0; border-top: 1px solid rgba(201,185,154,.12);
+  }
+  .loc-head {
+    display: flex; align-items: flex-end; justify-content: space-between; gap: 24px;
+    margin-bottom: 48px; flex-wrap: wrap;
+  }
+  .loc-head h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(34px,4.4vw,52px); font-weight: 400; color: #f1e9d6;
+    margin: 14px 0 0; line-height: 1.08; letter-spacing: -.005em; max-width: 18ch;
+  }
+  .loc-head .note { font-size: 12px; letter-spacing: .18em; text-transform: uppercase; color: #9a917a; max-width: 30ch; text-align: right; line-height: 1.6; }
+  .loc-grid {
+    display: grid; grid-template-columns: 1fr 1.6fr; gap: 32px;
+    align-items: stretch;
+  }
+  .loc-list {
+    display: flex; flex-direction: column;
+    border-top: 1px solid rgba(201,185,154,.18);
+  }
+  .loc-group {
+    font-size: 10px; letter-spacing: .32em; text-transform: uppercase; color: #9a917a;
+    padding: 22px 4px 10px;
+    border-bottom: 1px solid rgba(201,185,154,.18);
+    font-weight: 400;
+  }
+  .loc-group:first-child { padding-top: 14px; }
+  .loc-item {
+    display: flex; align-items: center; gap: 18px;
+    padding: 20px 4px;
+    border-bottom: 1px solid rgba(201,185,154,.18);
+    cursor: pointer;
+    transition: padding-left .3s cubic-bezier(.2,.7,.2,1), background .3s ease;
+    background: transparent; border-left: none; border-right: none; border-top: none;
+    text-align: left; width: 100%;
+    color: inherit;
+  }
+  .loc-item:hover, .loc-item.active {
+    padding-left: 14px;
+    background: linear-gradient(90deg, rgba(201,185,154,.06), rgba(201,185,154,0));
+  }
+  .loc-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px; color: var(--cream); font-weight: 500;
+    width: 32px; flex-shrink: 0; line-height: 1;
+  }
+  .loc-item.property .loc-num { color: #f1e9d6; }
+  .loc-text { flex: 1; min-width: 0; }
+  .loc-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 19px; font-weight: 500; color: #f1e9d6; line-height: 1.2; margin-bottom: 2px;
+  }
+  .loc-meta { font-size: 11px; letter-spacing: .22em; text-transform: uppercase; color: #9a917a; }
+  .loc-item.property .loc-name { font-style: italic; }
+  .loc-arrow {
+    color: var(--cream); font-size: 16px; opacity: 0;
+    transform: translateX(-6px);
+    transition: opacity .3s ease, transform .3s ease;
+  }
+  .loc-item:hover .loc-arrow, .loc-item.active .loc-arrow { opacity: 1; transform: translateX(0); }
+  .map-wrap {
+    position: relative;
+    min-height: 520px;
+    border: 1px solid rgba(201,185,154,.25);
+    overflow: hidden;
+    background: #0f0f1a;
+  }
+  #map { position: absolute; inset: 0; }
+  .map-frame {
+    position: absolute; inset: 10px; border: 1px solid rgba(201,185,154,.12);
+    pointer-events: none; z-index: 2;
+  }
+  .map-credit {
+    position: absolute; left: 14px; bottom: 12px; z-index: 3;
+    font-size: 9px; letter-spacing: .26em; text-transform: uppercase; color: rgba(201,185,154,.55);
+    background: rgba(19,19,31,.6); padding: 5px 9px; pointer-events: none;
+  }
+  .map-compass {
+    position: absolute; top: 14px; right: 14px; z-index: 3;
+    width: 44px; height: 44px; border: 1px solid rgba(201,185,154,.3);
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    background: rgba(19,19,31,.55); pointer-events: none;
+  }
+  .map-compass svg { width: 22px; height: 22px; fill: none; stroke: var(--cream); stroke-width: 1.2; stroke-linecap: round; stroke-linejoin: round; }
+  .pin {
+    width: 14px; height: 14px; border-radius: 50%;
+    background: var(--cream);
+    border: 2px solid var(--navy);
+    box-shadow: 0 0 0 1px var(--cream), 0 2px 8px rgba(0,0,0,.5);
+    cursor: pointer;
+    position: relative;
+    transition: transform .3s cubic-bezier(.2,.7,.2,1);
+  }
+  .pin:hover { transform: scale(1.25); }
+  .pin.property {
+    width: 18px; height: 18px; background: #f1e9d6;
+    box-shadow: 0 0 0 1px var(--cream), 0 0 0 6px rgba(201,185,154,.18), 0 2px 12px rgba(0,0,0,.6);
+    animation: pinPulse 2.4s ease-in-out infinite;
+  }
+  .pin-label {
+    position: absolute; top: 50%; left: calc(100% + 10px);
+    transform: translateY(-50%);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px; font-weight: 500; color: #f1e9d6;
+    background: rgba(19,19,31,.85);
+    padding: 5px 10px;
+    border: 1px solid rgba(201,185,154,.3);
+    white-space: nowrap; pointer-events: none;
+    opacity: 0; transition: opacity .25s ease, transform .25s ease;
+    transform-origin: left center;
+  }
+  .pin.property .pin-label { opacity: 1; font-style: italic; color: var(--cream); transform: translateY(-50%) translateX(0); }
+  .pin:hover .pin-label { opacity: 1; }
+  .mapboxgl-ctrl-attrib, .mapboxgl-ctrl-logo { opacity: .35; }
+  .mapboxgl-ctrl-bottom-left, .mapboxgl-ctrl-bottom-right { margin: 0 6px 6px 6px; }
+  @media (max-width: 820px) {
+    .loc-grid { grid-template-columns: 1fr; gap: 24px; }
+    .loc-head .note { text-align: left; }
+    .map-wrap { min-height: 420px; order: -1; }
+    .pin-label { font-size: 12px; padding: 4px 8px; }
+  }
+  @media (max-width: 560px) {
+    .map-wrap { min-height: 340px; }
+    .loc-item { padding: 16px 4px; }
+    .loc-name { font-size: 17px; }
+  }
+
+  /* ============ THE LIFE ============ */
+  .lifestyle { background: var(--cream); color: var(--navy); position: relative; }
+  .lifestyle .life-inner {
+    display: grid; grid-template-columns: 1fr 1.4fr; gap: 80px;
+    align-items: start;
+  }
+  .lifestyle .life-head h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(34px,4.4vw,56px);
+    line-height: 1.08; font-weight: 400; color: var(--navy);
+    margin: 18px 0 0; letter-spacing: -.005em;
+  }
+  .lifestyle .life-head h2 em { font-style: italic; color: #4a3f24; font-weight: 500; }
+  .lifestyle .eyebrow { color: #4a3f24; }
+  .lifestyle .life-body {
+    font-size: 16px; line-height: 1.85; color: #2a2418; font-weight: 300;
+    border-left: 1px solid rgba(26,26,46,.18);
+    padding-left: 32px;
+  }
+  .lifestyle .life-body p { margin: 0 0 16px; }
+  .lifestyle .life-body p:last-child { margin-bottom: 0; }
+  .lifestyle .life-coda {
+    font-family: 'Cormorant Garamond', serif !important;
+    font-style: italic; font-size: 22px !important; line-height: 1.45 !important;
+    color: var(--navy) !important;
+    border-top: 1px solid rgba(26,26,46,.2);
+    padding-top: 24px; margin-top: 24px !important;
+  }
+  @media (max-width: 820px) {
+    .lifestyle .life-inner { grid-template-columns: 1fr; gap: 36px; }
+    .lifestyle .life-body { padding-left: 22px; }
+    .lifestyle .life-coda { font-size: 19px !important; }
+  }
+
+  /* ============ FORM ============ */
+  .lead { background: var(--cream-bg); padding: 6rem 0; }
+  .lead-card {
+    background: var(--navy); color: var(--cream-soft);
+    max-width: 680px; margin: 0 auto;
+    padding: 64px 60px;
+    position: relative;
+    border: 1px solid rgba(201,185,154,.25);
+  }
+  .lead-card::before {
+    content: ""; position: absolute; inset: 10px; border: 1px solid rgba(201,185,154,.15); pointer-events: none;
+  }
+  .lead-card .inner { position: relative; }
+  .lead h2 {
+    font-family: 'Cormorant Garamond', serif; font-size: clamp(36px,4vw,48px);
+    font-weight: 400; color: #f1e9d6; margin: 14px 0 12px; line-height: 1.1; text-align: center;
+  }
+  .lead .sub { font-size: 14px; color: #a8a48c; text-align: center; margin: 0 0 40px; }
+  .field { margin-bottom: 22px; position: relative; }
+  .field label { display: block; font-size: 10px; letter-spacing: .28em; text-transform: uppercase; color: #9a917a; margin-bottom: 10px; font-weight: 400; }
+  .field .req { color: var(--cream); }
+  .field input, .field select, .field textarea {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid rgba(201,185,154,.35);
+    color: #f1e9d6;
+    padding: 10px 0 12px;
+    font-size: 15px; font-weight: 300;
+    outline: none;
+    transition: border-color .2s ease;
+    border-radius: 0;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus { border-bottom-color: var(--cream); }
+  .field textarea { resize: vertical; min-height: 80px; font-family: 'Jost', sans-serif; }
+  .field select {
+    appearance: none; -webkit-appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path fill='none' stroke='%23c9b99a' stroke-width='1.2' d='M1 1l5 5 5-5'/></svg>");
+    background-repeat: no-repeat; background-position: right 4px center;
+    padding-right: 24px;
+  }
+  .field select option { background: var(--navy); color: #f1e9d6; }
+  .field.error input, .field.error select { border-bottom-color: #d97b6c; }
+  .field .err { display: none; color: #d97b6c; font-size: 11px; letter-spacing: .12em; margin-top: 6px; text-transform: uppercase; }
+  .field.error .err { display: block; }
+  .field::after {
+    content: ""; position: absolute; left: 0; bottom: 0; height: 1px; background: var(--cream);
+    width: 0; transition: width .35s cubic-bezier(.2,.7,.2,1); pointer-events: none;
+  }
+  .field:focus-within::after { width: 100%; }
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  @media (max-width: 560px) { .row2 { grid-template-columns: 1fr; gap: 0; } }
+  .submit {
+    width: 100%;
+    background: var(--cream); color: var(--navy);
+    padding: 18px 24px;
+    font-size: 12px; letter-spacing: .3em; text-transform: uppercase; font-weight: 500;
+    margin-top: 14px;
+    transition: background .25s ease, color .25s ease;
+    border: 1px solid var(--cream);
+    position: relative; overflow: hidden;
+  }
+  .submit::after {
+    content: "→"; margin-left: 10px; display: inline-block;
+    transition: transform .3s cubic-bezier(.2,.7,.2,1);
+  }
+  .submit:hover { background: #dccba6; border-color: #dccba6; }
+  .submit:hover::after { transform: translateX(4px); }
+  .legal { text-align: center; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: #7a7590; margin-top: 22px; }
+  .success { display: none; text-align: center; padding: 20px 0; }
+  .success.show { display: block; }
+  .lead-card.done .form { display: none; }
+  .check {
+    width: 72px; height: 72px; border-radius: 50%; border: 1px solid var(--cream);
+    margin: 0 auto 28px; display: flex; align-items: center; justify-content: center;
+    transform: scale(.6); opacity: 0;
+    transition: transform .55s cubic-bezier(.2,1.4,.3,1), opacity .4s ease;
+  }
+  .success.show .check { transform: scale(1); opacity: 1; }
+  .check svg { width: 30px; height: 30px; stroke: var(--cream); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+  .check svg path { stroke-dasharray: 30; stroke-dashoffset: 30; transition: stroke-dashoffset .6s .25s cubic-bezier(.2,.7,.2,1); }
+  .success.show .check svg path { stroke-dashoffset: 0; }
+  .success h3 { font-family: 'Cormorant Garamond', serif; font-size: 36px; font-weight: 400; color: #f1e9d6; margin: 0 0 14px; line-height: 1.2; opacity: 0; transform: translateY(8px); transition: opacity .5s .35s ease, transform .5s .35s ease; }
+  .success.show h3 { opacity: 1; transform: translateY(0); }
+  .success p { color: #a8a48c; max-width: 36ch; margin: 0 auto; font-size: 15px; opacity: 0; transform: translateY(8px); transition: opacity .5s .45s ease, transform .5s .45s ease; }
+  .success.show p { opacity: 1; transform: translateY(0); }
+  @media (max-width: 560px) {
+    .lead-card { padding: 44px 26px; }
+    .lead-card::before { inset: 8px; }
+  }
+
+  /* ============ FOOTER ============ */
+  footer { background: #0d0d18; color: #a8a48c; padding: 64px 0 56px; text-align: center; border-top: 1px solid rgba(201,185,154,.1); }
+  footer .flogo {
+    font-family: 'Cormorant Garamond', serif;
+    color: var(--cream); font-size: clamp(22px,2.4vw,28px); font-weight: 500; line-height: 1.4;
+    letter-spacing: .01em;
+  }
+  footer .flogo .dot { margin: 0 .5em; color: rgba(201,185,154,.5); }
+  footer .fsub { margin-top: 18px; font-size: 11px; letter-spacing: .32em; text-transform: uppercase; color: #6a6580; }
+  footer .frule { width: 40px; height: 1px; background: var(--cream); opacity: .5; margin: 28px auto 0; }
+  @media (max-width: 560px) {
+    footer .flogo { font-size: 18px; }
+    footer .flogo .dot { display: block; margin: 6px 0; font-size: 8px; }
+  }
+
+  /* ============ SCROLL REVEAL ============ */
+  .reveal { opacity: 0; transform: translateY(22px); transition: opacity .9s cubic-bezier(.2,.7,.2,1), transform .9s cubic-bezier(.2,.7,.2,1); }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+  .reveal[data-delay="1"] { transition-delay: .08s; }
+  .reveal[data-delay="2"] { transition-delay: .16s; }
+  .reveal[data-delay="3"] { transition-delay: .24s; }
+  .reveal[data-delay="4"] { transition-delay: .32s; }
+  .reveal[data-delay="5"] { transition-delay: .4s; }
+
+  /* ============ ANIMATIONS ============ */
+  @keyframes heroIn { to { opacity: 1; transform: translateY(0); } }
+  @keyframes rfIn { to { transform: translateY(0); opacity: 1; } }
+  @keyframes pipPulse {
+    0%,100% { box-shadow: 0 0 0 0 rgba(201,185,154,.6); transform: scale(1); }
+    60% { box-shadow: 0 0 0 6px rgba(201,185,154,0); transform: scale(1.15); }
+  }
+  @keyframes rfGemBreathe {
+    0%,100% { transform: scale(1) rotate(0deg); }
+    50% { transform: scale(1.1) rotate(-4deg); }
+  }
+  @keyframes rfSparkle {
+    0%,100% { opacity: 0; transform: scale(.3); }
+    35% { opacity: 1; transform: scale(1); }
+    65% { opacity: 0; transform: scale(.3); }
+  }
+  @keyframes pinPulse {
+    0%,100% { box-shadow: 0 0 0 1px var(--cream), 0 0 0 6px rgba(201,185,154,.18), 0 2px 12px rgba(0,0,0,.6); }
+    50% { box-shadow: 0 0 0 1px var(--cream), 0 0 0 12px rgba(201,185,154,0), 0 2px 12px rgba(0,0,0,.6); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: .001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: .001ms !important;
+    }
+    .reveal { opacity: 1; transform: none; }
+    .hero h1, .hero .lede, .hero .hero-foot, .hero .badge, .rare-find { opacity: 1; transform: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<nav class="nav" data-screen-label="Nav">
+  <div class="nav-inner">
+    <div class="logo">
+      The Wessex<span class="logo-location"><span class="dot">·</span>West Cliff</span>
+      <span class="sub">Private Sale</span>
+    </div>
+    <a class="nav-cta" href="#enquire">Book a Private Viewing</a>
+  </div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<header class="hero" data-screen-label="Hero">
+  <div class="hero-bg" aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="badge"><span class="pip"></span>Private Sale · West Cliff · Bournemouth BH2</div>
+    <h1>Where Every Morning<br><em>Begins at the Sea</em></h1>
+    <p class="lede">
+      A rare south-facing residence in Bournemouth's most coveted address.
+      1,100 sq ft of contemporary coastal living — five minutes from the sand,
+      a world away from the ordinary.
+    </p>
+
+    <div class="rare-find" aria-label="Rare find">
+      <div class="rf-gem" aria-hidden="true">
+        <svg viewBox="0 0 24 24">
+          <path d="M6 9.5l3-5h6l3 5-6 10z"></path>
+          <path d="M6 9.5h12"></path>
+          <path d="M9 9.5L12 19.5"></path>
+          <path d="M15 9.5L12 19.5"></path>
+          <path d="M9 4.5l3 5 3-5"></path>
+        </svg>
+        <span class="rf-spark"></span>
+      </div>
+      <div class="rf-copy">
+        <div class="rf-title">A Rare Find</div>
+        <div class="rf-sub">Apartments of this calibre on West Cliff Road list infrequently.</div>
+      </div>
+    </div>
+
+    <div class="hero-foot">
+      <div>
+        <div class="price-label">Guide Price</div>
+        <div class="price">£450,000</div>
+      </div>
+      <div class="hero-meta">
+        Share of Freehold<br>
+        <strong>Direct from Owner</strong>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ============ STATS BAR ============ -->
+<section class="stats" style="padding:0" data-screen-label="Stats">
+  <div class="stats-grid">
+    <div class="stat"><div class="num">1,100<span style="font-size:.55em;letter-spacing:.04em;"> sq ft</span></div><div class="lbl">Internal Area</div></div>
+    <div class="stat"><div class="num">5 min</div><div class="lbl">To the Beach</div></div>
+    <div class="stat"><div class="num">2022</div><div class="lbl">Year Built</div></div>
+    <div class="stat"><div class="num">2</div><div class="lbl">Bedrooms</div></div>
+    <div class="stat"><div class="num">2</div><div class="lbl">Bathrooms</div></div>
+    <div class="stat"><div class="num">1</div><div class="lbl">Underground Bay</div></div>
+  </div>
+</section>
+
+<!-- ============ GALLERY ============ -->
+<section class="gallery" data-screen-label="Gallery">
+  <div class="wrap">
+    <div class="gallery-head">
+      <div>
+        <div class="eyebrow">Gallery</div>
+        <h2>Inside The Wessex.</h2>
+      </div>
+      <div class="note">Full photo gallery available upon enquiry</div>
+    </div>
+
+    <div class="gallery-grid">
+      <div class="g tall">
+        <img src="images/14a5e3e3-8305-44ac-9b1f-d40e417748aa.jpeg" alt="Living room with leather sofas, green velvet armchairs and south-facing windows" loading="lazy">
+        <div class="g-caption">01 · Living Room</div>
+      </div>
+      <div class="g">
+        <img src="images/8c856d79-4618-4947-a08c-c4f032bdda3e.jpeg" alt="Modern white galley kitchen with wood-effect worktops and Bosch appliances" loading="lazy">
+        <div class="g-caption">02 · Kitchen</div>
+      </div>
+      <div class="g">
+        <img src="images/30143afc-962b-4262-b9b3-aa9245366bbb.jpeg" alt="Dining area with solid oak table, designer pendant lighting and breakfast bar" loading="lazy">
+        <div class="g-caption">03 · Dining Area</div>
+      </div>
+      <div class="g">
+        <img src="images/0acb7f8f-a3df-4529-a94f-a93ae5b01fb9.jpeg" alt="Master bedroom with king-size bed, fitted wardrobes and en-suite access" loading="lazy">
+        <div class="g-caption">04 · Master Bedroom</div>
+      </div>
+      <div class="g">
+        <img src="images/62764418-7978-4da1-acef-2156e357f33d.jpeg" alt="Master en-suite with marble-effect tiles and walk-in shower" loading="lazy">
+        <div class="g-caption">05 · Master En-Suite</div>
+      </div>
+      <div class="g">
+        <img src="images/a050ae95-dd41-4251-8267-b3c065cb5663.jpeg" alt="Second bedroom with double bed, Juliet balcony and garden views" loading="lazy">
+        <div class="g-caption">06 · Second Bedroom</div>
+      </div>
+      <div class="g">
+        <img src="images/97c2e900-12c8-4f23-9e6e-f87305598914.jpeg" alt="Second bathroom with full bath, glass shower screen and grey marble tiles" loading="lazy">
+        <div class="g-caption">07 · Second Bathroom</div>
+      </div>
+      <div class="g">
+        <img src="images/92f4e280-c616-450d-9b22-9e1ab34b609b.jpeg" alt="South-facing private balcony with seating and views over the lawn and gardens" loading="lazy">
+        <div class="g-caption">08 · Balcony</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ THE ADDRESS ============ -->
+<section class="property" data-screen-label="Address">
+  <div class="wrap">
+    <div class="prop-head">
+      <div>
+        <div class="eyebrow on-light">The Address</div>
+        <h2>A Landmark Address <em style="font-style:italic;color:#8a7a52;font-family:'Cormorant Garamond',serif;">Reimagined.</em></h2>
+      </div>
+      <div class="body">
+        <p>
+          The Wessex stands on one of Bournemouth's most storied plots — the site of the
+          original Wessex Hotel, opened in 1891, where Edwardian society came to promenade,
+          take the sea air, and be seen. Today, that same spirit of privileged coastal living
+          has been reborn in two elegant contemporary buildings, designed by award-winning
+          Inland Homes.
+        </p>
+        <p>
+          Your apartment sits within this landmark development, just a five-minute walk from
+          seven miles of Blue Flag beaches, and moments from the clifftop gardens, restaurants,
+          and boutiques that make West Cliff one of the south coast's most desirable postcodes.
+        </p>
+        <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:20px;color:var(--navy);line-height:1.4;margin-top:18px;">
+          This is not a flat near the beach. This is a life <em>at</em> the sea.
+        </p>
+        <div class="pills">
+          <span class="pill">West Cliff Road · BH2</span>
+          <span class="pill">5 Min to Blue Flag Beach</span>
+          <span class="pill">West Cliff Gardens</span>
+          <span class="pill">Bournemouth Pier</span>
+          <span class="pill">Town Centre</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ THE RESIDENCE ============ -->
+<section class="property" style="padding-top:0" data-screen-label="Residence">
+  <div class="wrap">
+    <div class="prop-head">
+      <div>
+        <div class="eyebrow on-light">The Residence</div>
+        <h2>Light, Space, <em style="font-style:italic;color:#8a7a52;font-family:'Cormorant Garamond',serif;">and Sea Air.</em></h2>
+      </div>
+      <div class="body">
+        <p>
+          At 1,100 square feet, this is not a typical two-bedroom apartment. South-facing
+          throughout, the principal rooms are flooded with natural light from morning to dusk.
+          Step through the living room onto your private balcony and feel the coastal breeze.
+          Open the patio doors in both bedrooms to their own Juliet balconies, and wake up to
+          open sky.
+        </p>
+        <p>
+          Every detail has been considered. Underfloor heating runs throughout. A state-of-the-art
+          MVHR ventilation system draws in fresh sea air while retaining warmth. Bosch appliances.
+          Porcelanosa tiles. A water softener. High-quality wooden flooring. These are not
+          afterthoughts — they are the standard at The Wessex.
+        </p>
+      </div>
+    </div>
+
+    <div class="features">
+      <div class="feature">
+        <div class="ico"><svg viewBox="0 0 24 24"><path d="M4 13l8-7 8 7"></path><path d="M6 11v9h12v-9"></path><path d="M10 20v-5h4v5"></path></svg></div>
+        <div>
+          <h3>South-Facing Balcony</h3>
+          <p>Open sky and sea glimpses, sunshine from morning to evening.</p>
+        </div>
+      </div>
+      <div class="feature">
+        <div class="ico"><svg viewBox="0 0 24 24"><path d="M5 17h14"></path><path d="M5 17l1.5-7h11L19 17"></path><circle cx="8" cy="18.5" r="1.5"></circle><circle cx="16" cy="18.5" r="1.5"></circle></svg></div>
+        <div>
+          <h3>Secure Underground Parking</h3>
+          <p>Your allocated space, safe and private — a rarity on the West Cliff.</p>
+        </div>
+      </div>
+      <div class="feature">
+        <div class="ico"><svg viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="16"></rect><path d="M12 4v16"></path><path d="M3 20h18"></path></svg></div>
+        <div>
+          <h3>Juliet Balconies, Both Bedrooms</h3>
+          <p>Wake up to coastal light and open air in every principal room.</p>
+        </div>
+      </div>
+      <div class="feature">
+        <div class="ico"><svg viewBox="0 0 24 24"><path d="M4 14c2-2 4 0 6-2s4 0 6-2 4 0 4 0"></path><path d="M4 19c2-2 4 0 6-2s4 0 6-2 4 0 4 0"></path></svg></div>
+        <div>
+          <h3>Underfloor Heating + MVHR</h3>
+          <p>Warm in winter, fresh all year round — quiet, even comfort throughout.</p>
+        </div>
+      </div>
+      <div class="feature">
+        <div class="ico"><svg viewBox="0 0 24 24"><path d="M6 4h12v16H6z"></path><path d="M9 10h6"></path><path d="M9 14h4"></path><circle cx="15.5" cy="14.5" r="1.5"></circle></svg></div>
+        <div>
+          <h3>Master with En-Suite</h3>
+          <p>Walk-in shower, marble-effect tiles, mirrored storage.</p>
+        </div>
+      </div>
+      <div class="feature">
+        <div class="ico"><svg viewBox="0 0 24 24"><path d="M3 12c4-5 14-5 18 0"></path><path d="M6 15c3-3 9-3 12 0"></path><circle cx="12" cy="18.5" r="1.2"></circle></svg></div>
+        <div>
+          <h3>Ultra-Fast Broadband 1800 Mbps</h3>
+          <p>Work from the coast, without compromise.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ LOCATION ============ -->
+<section class="location" data-screen-label="Location">
+  <div class="wrap">
+    <div class="loc-head">
+      <div>
+        <div class="eyebrow">The Location</div>
+        <h2><em style="font-style:italic;color:var(--cream)">Everything</em> Within Reach.</h2>
+      </div>
+      <div class="note">Five minutes on foot to the beach.<br>Everything else, moments away.</div>
+    </div>
+
+    <div class="loc-grid">
+      <div class="loc-list" id="locList">
+        <div class="loc-group">The Property</div>
+        <button class="loc-item property active" data-id="property">
+          <div class="loc-num">01</div>
+          <div class="loc-text">
+            <div class="loc-name">The Wessex</div>
+            <div class="loc-meta">West Cliff Road · BH2</div>
+          </div>
+          <div class="loc-arrow">→</div>
+        </button>
+
+        <div class="loc-group">Beach &amp; Sea</div>
+        <button class="loc-item" data-id="beach">
+          <div class="loc-num">02</div>
+          <div class="loc-text">
+            <div class="loc-name">Bournemouth Beach</div>
+            <div class="loc-meta">5 min walk · Blue Flag</div>
+          </div>
+          <div class="loc-arrow">→</div>
+        </button>
+        <button class="loc-item" data-id="pier">
+          <div class="loc-num">03</div>
+          <div class="loc-text">
+            <div class="loc-name">Bournemouth Pier</div>
+            <div class="loc-meta">8 min walk</div>
+          </div>
+          <div class="loc-arrow">→</div>
+        </button>
+        <button class="loc-item" data-id="gardens">
+          <div class="loc-num">04</div>
+          <div class="loc-text">
+            <div class="loc-name">West Cliff Gardens</div>
+            <div class="loc-meta">2 min walk</div>
+          </div>
+          <div class="loc-arrow">→</div>
+        </button>
+
+        <div class="loc-group">Town &amp; Lifestyle</div>
+        <button class="loc-item" data-id="town">
+          <div class="loc-num">05</div>
+          <div class="loc-text">
+            <div class="loc-name">Town Centre &amp; Westover Road</div>
+            <div class="loc-meta">10 min walk · Shops &amp; Dining</div>
+          </div>
+          <div class="loc-arrow">→</div>
+        </button>
+
+        <div class="loc-group">Nearest Stations</div>
+        <button class="loc-item" data-id="station">
+          <div class="loc-num">06</div>
+          <div class="loc-text">
+            <div class="loc-name">Bournemouth Station</div>
+            <div class="loc-meta">22 min walk · London Waterloo &lt; 2 hr</div>
+          </div>
+          <div class="loc-arrow">→</div>
+        </button>
+        <button class="loc-item" data-id="branksome">
+          <div class="loc-num">07</div>
+          <div class="loc-text">
+            <div class="loc-name">Branksome Station</div>
+            <div class="loc-meta">Direct trains to Weymouth &amp; Poole</div>
+          </div>
+          <div class="loc-arrow">→</div>
+        </button>
+
+        <div class="loc-group">Nearest Schools</div>
+        <button class="loc-item" data-id="schoolPrimary">
+          <div class="loc-num">08</div>
+          <div class="loc-text">
+            <div class="loc-name">St Michael's CE Primary</div>
+            <div class="loc-meta">Primary · 5 min walk · 'Good' Ofsted</div>
+          </div>
+          <div class="loc-arrow">→</div>
+        </button>
+        <button class="loc-item" data-id="schoolSecondary">
+          <div class="loc-num">09</div>
+          <div class="loc-text">
+            <div class="loc-name">Bournemouth School</div>
+            <div class="loc-meta">Boys' Grammar · 'Outstanding'</div>
+          </div>
+          <div class="loc-arrow">→</div>
+        </button>
+        <button class="loc-item" data-id="schoolGirls">
+          <div class="loc-num">10</div>
+          <div class="loc-text">
+            <div class="loc-name">Talbot Heath School</div>
+            <div class="loc-meta">Independent Girls' · Day &amp; Boarding</div>
+          </div>
+          <div class="loc-arrow">→</div>
+        </button>
+      </div>
+
+      <div class="map-wrap">
+        <div id="map"></div>
+        <div class="map-frame"></div>
+        <div class="map-compass" aria-hidden="true">
+          <svg viewBox="0 0 24 24">
+            <path d="M12 3l3 9-3-2-3 2 3-9z" fill="#c9b99a" stroke="#c9b99a"></path>
+            <path d="M12 13l-3 8 3-2 3 2-3-8z" stroke="#c9b99a" opacity=".4"></path>
+          </svg>
+        </div>
+        <div class="map-credit">West Cliff Road · BH2 5HJ</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ THE LIFE ============ -->
+<section class="lifestyle" data-screen-label="Life">
+  <div class="wrap">
+    <div class="life-inner">
+      <div class="life-head">
+        <div class="eyebrow">The Life</div>
+        <h2>Seven Miles of <em>Blue Flag Beach.</em></h2>
+      </div>
+      <div class="life-body">
+        <p>
+          Bournemouth has more sunshine than almost anywhere else in the UK. On a summer
+          morning you can walk to the beach in five minutes, take the cable lift down the
+          cliffs to the promenade, and cycle east along the shore as the town wakes up around you.
+        </p>
+        <p>
+          At the weekend, the clifftop restaurants fill with people who made the right decision.
+          WestBeach for seafood with a view. The Triangle for something more bohemian. Westover
+          Road — Bournemouth's Bond Street — for a different kind of Saturday afternoon.
+        </p>
+        <p>
+          Meyrick Park, with its 18-hole golf course, spa, and symphony concerts, is a mile away.
+          Dean Park Cricket Ground is closer still. And when you want the city, London Waterloo
+          is under two hours by train.
+        </p>
+        <p class="life-coda">
+          This is coastal life without compromise. The beach when you want it. The city when
+          you need it. And on every ordinary Tuesday — a home that reminds you why you chose this.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ INVESTMENT ============ -->
+<section class="invest" data-screen-label="Investment">
+  <div class="wrap">
+    <div class="invest-inner">
+      <div class="yield">
+        <div class="eyebrow">For Investors</div>
+        <div class="num"><span class="tilde">~</span>6%</div>
+        <h2>A Rare Yield <em style="font-style:italic;color:var(--cream)">on the South Coast.</em></h2>
+        <p>Bournemouth's rental market is one of the strongest outside London. A 2022-built, fully furnished apartment of this specification — five minutes from seven miles of Blue Flag beach — commands premium rates year-round.</p>
+      </div>
+      <div class="ipoints">
+        <div class="ipoint">
+          <h4>Holiday Let Income</h4>
+          <p>£150–200/night peak season. Airbnb demand for coastal Bournemouth is exceptional year-round.</p>
+        </div>
+        <div class="ipoint">
+          <h4>Long-Term Rental</h4>
+          <p>£1,800–2,200/month. Strong demand from professionals and families relocating to the south coast.</p>
+        </div>
+        <div class="ipoint">
+          <h4>Zero Near-Term Maintenance</h4>
+          <p>Built 2022. No renovation, no repairs, no surprises.</p>
+        </div>
+        <div class="ipoint">
+          <h4>Strong EPC Rating</h4>
+          <p>MVHR system and underfloor heating mean low running costs — a key factor for tenants and future buyers alike.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CALCULATORS ============ -->
+<section class="calc" data-screen-label="Calculators">
+  <div class="wrap">
+    <div class="calc-head">
+      <div class="eyebrow on-light">Before You Enquire</div>
+      <h2>Run The <em>Numbers.</em></h2>
+      <p>Two quick estimates to help you understand the real cost of buying The Wessex — your monthly mortgage and the UK Stamp Duty you'll owe on completion.</p>
+    </div>
+
+    <div class="calc-grid">
+      <!-- MORTGAGE CALCULATOR -->
+      <div class="calc-card" id="calcMortgage">
+        <div class="ctitle">
+          <div>
+            <h3>Monthly Mortgage</h3>
+            <div class="csub">Repayment Estimate</div>
+          </div>
+          <div class="cicon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M4 12l8-7 8 7"></path><path d="M6 10v9h12v-9"></path><path d="M10 19v-4h4v4"></path></svg>
+          </div>
+        </div>
+        <div class="crow">
+          <div class="cfield">
+            <label>Property Price <span class="val" id="mpriceLabel">£450,000</span></label>
+            <input type="range" id="mprice" min="100000" max="1500000" step="5000" value="450000">
+          </div>
+        </div>
+        <div class="crow split">
+          <div class="cfield">
+            <label>Deposit <span class="val" id="mdepositLabel">£90,000</span></label>
+            <input type="range" id="mdeposit" min="0" max="500000" step="5000" value="90000">
+          </div>
+          <div class="cfield">
+            <label>Term <span class="val" id="mtermLabel">25 yrs</span></label>
+            <input type="range" id="mterm" min="5" max="40" step="1" value="25">
+          </div>
+        </div>
+        <div class="crow">
+          <div class="cfield">
+            <label>Interest Rate <span class="val" id="mrateLabel">4.50%</span></label>
+            <input type="range" id="mrate" min="100" max="900" step="5" value="450">
+          </div>
+        </div>
+        <div class="cresult">
+          <div>
+            <div class="rlbl">Estimated Monthly Payment</div>
+            <div class="rval"><span class="currency">£</span><span id="mMonthly">––</span></div>
+          </div>
+          <div class="rside">
+            <span class="rs-num" id="mLoan">––</span>
+            Loan Amount
+          </div>
+        </div>
+        <div class="cnote">For illustration only · Not a mortgage offer</div>
+      </div>
+
+      <!-- STAMP DUTY CALCULATOR -->
+      <div class="calc-card" id="calcSdlt">
+        <div class="ctitle">
+          <div>
+            <h3>UK Stamp Duty</h3>
+            <div class="csub">SDLT · England 2025/26 rates</div>
+          </div>
+          <div class="cicon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16"></rect><path d="M8 9h8"></path><path d="M8 13h8"></path><path d="M8 17h5"></path></svg>
+          </div>
+        </div>
+        <div class="crow">
+          <div class="cfield">
+            <label>Property Price <span class="val" id="spriceLabel">£450,000</span></label>
+            <input type="range" id="sprice" min="100000" max="1500000" step="5000" value="450000">
+          </div>
+        </div>
+        <div class="crow">
+          <div class="cfield">
+            <label>Buyer Type</label>
+            <div class="cradio" id="sBuyerType">
+              <label><input type="radio" name="sBuyer" value="main" checked> Main Home</label>
+              <label><input type="radio" name="sBuyer" value="ftb"> First-Time Buyer</label>
+              <label><input type="radio" name="sBuyer" value="additional"> Second / BTL</label>
+            </div>
+          </div>
+        </div>
+        <div class="cresult">
+          <div>
+            <div class="rlbl">Stamp Duty Owed</div>
+            <div class="rval"><span class="currency">£</span><span id="sTotal">––</span></div>
+          </div>
+          <div class="rside">
+            <span class="rs-num" id="sEffective">––</span>
+            Effective Rate
+          </div>
+        </div>
+        <div class="cbreakdown" id="sBreakdown"></div>
+        <div class="cnote">England &amp; N. Ireland · Indicative — confirm with your solicitor</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ LEAD CAPTURE ============ -->
+<section class="lead" id="enquire" data-screen-label="Enquire">
+  <div class="wrap">
+    <div class="lead-card" id="leadCard">
+      <div class="inner">
+        <div style="text-align:center"><div class="eyebrow">Enquire</div></div>
+        <h2>See It For Yourself.</h2>
+        <p class="sub">Private viewings are available by appointment.<br>Fill in your details and we'll be in touch within 24 hours.</p>
+
+        <form class="form" id="leadForm" novalidate>
+          <div class="row2">
+            <div class="field" data-name="name">
+              <label>Full Name <span class="req">*</span></label>
+              <input type="text" name="name" autocomplete="name">
+              <div class="err">Please enter your name</div>
+            </div>
+            <div class="field" data-name="email">
+              <label>Email <span class="req">*</span></label>
+              <input type="email" name="email" autocomplete="email">
+              <div class="err">Please enter a valid email</div>
+            </div>
+          </div>
+          <div class="row2">
+            <div class="field" data-name="phone">
+              <label>Phone</label>
+              <input type="tel" name="phone" autocomplete="tel">
+            </div>
+            <div class="field" data-name="role">
+              <label>I am interested as a</label>
+              <select name="role">
+                <option value="home-buyer">Home buyer (primary residence)</option>
+                <option value="second-home">Holiday home / second property</option>
+                <option value="btl">Buy-to-let investor</option>
+                <option value="short-let">Short-term holiday let investor</option>
+              </select>
+            </div>
+          </div>
+          <div class="field" data-name="message">
+            <label>Message <span style="color:#7a7590;font-size:9px;margin-left:6px;">Optional</span></label>
+            <textarea name="message" rows="3" placeholder="Anything we should know — preferred viewing dates, questions, timeline."></textarea>
+          </div>
+          <button class="submit" type="submit">Request a Private Viewing</button>
+          <div class="legal">Your details go directly to the owner · No agents · No callbacks from strangers</div>
+        </form>
+
+        <div class="success" id="successState">
+          <div class="check">
+            <svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>
+          </div>
+          <h3>Thank you.</h3>
+          <p>We'll be in touch shortly to arrange your viewing.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer data-screen-label="Footer">
+  <div class="wrap">
+    <div class="flogo">The Wessex<span class="dot">·</span>West Cliff Road<span class="dot">·</span>Bournemouth<span class="dot">·</span>BH2</div>
+    <div class="frule"></div>
+    <div class="fsub">Private Sale · £450,000 · Share of Freehold · Built 2022 by Inland Homes</div>
+  </div>
+</footer>
+
+<script src="https://api.mapbox.com/mapbox-gl-js/v3.4.0/mapbox-gl.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+  const _sb = supabase.createClient(
+    'https://zlfnjjvtvqudulprlfdn.supabase.co',
+    'sb_publishable_mArmvb7s8f7XIex6s5vMSw_fnj7WVoc'
+  );
+</script>
+<script>
+  // Smooth scroll
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const id = a.getAttribute('href').slice(1);
+      const el = document.getElementById(id);
+      if (el) { e.preventDefault(); el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    });
+  });
+
+  // Form validation + success state
+  const form = document.getElementById('leadForm');
+  const card = document.getElementById('leadCard');
+  const success = document.getElementById('successState');
+
+  function setError(name, on) {
+    const f = form.querySelector(`.field[data-name="${name}"]`);
+    if (f) f.classList.toggle('error', !!on);
+  }
+
+  form.addEventListener('input', e => {
+    if (e.target.name === 'name' && e.target.value.trim()) setError('name', false);
+    if (e.target.name === 'email' && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e.target.value)) setError('email', false);
+  });
+
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    const data = new FormData(form);
+    const name = (data.get('name') || '').toString().trim();
+    const email = (data.get('email') || '').toString().trim();
+    const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    let ok = true;
+    if (!name) { setError('name', true); ok = false; }
+    if (!emailOk) { setError('email', true); ok = false; }
+    if (!ok) return;
+
+    const btn = form.querySelector('.submit');
+    btn.disabled = true;
+    btn.textContent = 'Sending…';
+
+    const { error } = await _sb.from('leads').insert({
+      name,
+      email,
+      phone:   (data.get('phone')   || '').toString().trim() || null,
+      role:    (data.get('role')    || '').toString().trim() || null,
+      message: (data.get('message') || '').toString().trim() || null,
+    });
+
+    if (error) {
+      btn.disabled = false;
+      btn.textContent = 'Request a Private Viewing';
+      const leg = form.querySelector('.legal');
+      if (leg) { leg.textContent = 'Something went wrong — please try again or email directly.'; leg.style.color = '#d97b6c'; }
+      return;
+    }
+
+    card.classList.add('done');
+    success.classList.add('show');
+    success.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  });
+
+  // ============ Mapbox ============
+  mapboxgl.accessToken = 'pk.eyJ1IjoibHV2bml0IiwiYSI6ImNtcDlrZzZtNjBodHEycXNrZHJwYWMwdXEifQ.9NTiCDTv50ZHRpoZLhkLfQ';
+
+  const LOCATIONS = {
+    property:        { name: 'The Wessex',              meta: 'Your New Home',                    lngLat: [-1.8857, 50.7196], property: true },
+    beach:           { name: 'Bournemouth Beach',       meta: '5 min walk',                       lngLat: [-1.8810, 50.7158] },
+    pier:            { name: 'Bournemouth Pier',        meta: '8 min walk',                       lngLat: [-1.8770, 50.7142] },
+    gardens:         { name: 'West Cliff Gardens',      meta: '2 min walk',                       lngLat: [-1.8835, 50.7176] },
+    town:            { name: 'Town Centre',             meta: '10 min walk',                      lngLat: [-1.8788, 50.7211] },
+    station:         { name: 'Bournemouth Station',     meta: 'Trains to Waterloo',               lngLat: [-1.8453, 50.7280] },
+    branksome:       { name: 'Branksome Station',       meta: 'Weymouth & Poole line',            lngLat: [-1.9024, 50.7251] },
+    schoolPrimary:   { name: "St Michael's CE Primary", meta: 'Primary · 5 min walk',             lngLat: [-1.8889, 50.7220] },
+    schoolSecondary: { name: 'Bournemouth School',      meta: "Boys' Grammar · Outstanding",      lngLat: [-1.8546, 50.7414] },
+    schoolGirls:     { name: 'Talbot Heath School',     meta: "Independent Girls'",               lngLat: [-1.8957, 50.7300] }
+  };
+
+  const map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/standard',
+    center: [LOCATIONS.property.lngLat[0], LOCATIONS.property.lngLat[1] - 0.0028],
+    zoom: 15.2,
+    pitch: 66,
+    bearing: 175,
+    antialias: true,
+    attributionControl: false,
+    cooperativeGestures: true
+  });
+  map.addControl(new mapboxgl.AttributionControl({ compact: true }), 'bottom-right');
+
+  let dashStep = 0;
+  const DASH_SEQUENCE = [
+    [0, 4, 3, 1, 1, 1],
+    [0.5, 4, 2.5, 1, 1, 1],
+    [1, 4, 2, 1, 1, 1],
+    [1.5, 4, 1.5, 1, 1, 1],
+    [2, 4, 1, 1, 1, 1],
+    [2.5, 4, 0.5, 1, 1, 1],
+    [3, 4, 0, 1, 1, 1]
+  ];
+
+  const markers = {};
+  map.on('style.load', () => {
+    try {
+      map.setConfigProperty('basemap', 'lightPreset', 'night');
+      map.setConfigProperty('basemap', 'showPointOfInterestLabels', true);
+      map.setConfigProperty('basemap', 'showTransitLabels', false);
+      map.setConfigProperty('basemap', 'showRoadLabels', true);
+    } catch(e) {}
+
+    if (!map.getSource('mapbox-dem')) {
+      map.addSource('mapbox-dem', {
+        type: 'raster-dem',
+        url: 'mapbox://mapbox.mapbox-terrain-dem-v1',
+        tileSize: 512,
+        maxzoom: 14
+      });
+      map.setTerrain({ source: 'mapbox-dem', exaggeration: 1.2 });
+    }
+
+    if (map.setFog) {
+      map.setFog({
+        color: 'rgba(19,19,31,0.6)',
+        'high-color': '#1a1a2e',
+        'horizon-blend': 0.1,
+        'space-color': '#0d0d18',
+        'star-intensity': 0.15
+      });
+    }
+
+    const property = LOCATIONS.property.lngLat;
+    const routeFeatures = Object.entries(LOCATIONS)
+      .filter(([id]) => id !== 'property')
+      .map(([id, loc]) => ({
+        type: 'Feature',
+        properties: { id },
+        geometry: { type: 'LineString', coordinates: [property, loc.lngLat] }
+      }));
+
+    map.addSource('routes', {
+      type: 'geojson',
+      data: { type: 'FeatureCollection', features: routeFeatures }
+    });
+
+    map.addLayer({
+      id: 'routes-glow',
+      type: 'line',
+      source: 'routes',
+      layout: { 'line-cap': 'round', 'line-join': 'round' },
+      paint: { 'line-color': '#c9b99a', 'line-width': 6, 'line-opacity': 0.12, 'line-blur': 4 }
+    });
+
+    map.addLayer({
+      id: 'routes-dash',
+      type: 'line',
+      source: 'routes',
+      layout: { 'line-cap': 'round', 'line-join': 'round' },
+      paint: { 'line-color': '#c9b99a', 'line-width': 2, 'line-opacity': 0.85, 'line-dasharray': [0, 4, 3] }
+    });
+
+    function animateDash() {
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      dashStep = (dashStep + 1) % DASH_SEQUENCE.length;
+      if (map.getLayer('routes-dash')) {
+        map.setPaintProperty('routes-dash', 'line-dasharray', DASH_SEQUENCE[dashStep]);
+      }
+      setTimeout(animateDash, 90);
+    }
+    setTimeout(animateDash, 400);
+
+    Object.entries(LOCATIONS).forEach(([id, loc]) => {
+      const el = document.createElement('div');
+      el.className = 'pin' + (loc.property ? ' property' : '');
+      const label = document.createElement('div');
+      label.className = 'pin-label';
+      label.textContent = loc.name;
+      el.appendChild(label);
+      el.addEventListener('click', ev => { ev.stopPropagation(); focusLocation(id); });
+      const m = new mapboxgl.Marker({ element: el, anchor: 'center' })
+        .setLngLat(loc.lngLat)
+        .addTo(map);
+      markers[id] = m;
+    });
+
+    let lastInteract = Date.now();
+    const baseBearing = 175;
+    map.on('movestart', () => { lastInteract = Date.now(); });
+    const t0 = performance.now();
+    function drift(now) {
+      if (Date.now() - lastInteract > 5000) {
+        const t = (now - t0) / 1000;
+        map.setBearing(baseBearing + Math.sin(t * 0.18) * 6);
+      }
+      requestAnimationFrame(drift);
+    }
+    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) requestAnimationFrame(drift);
+  });
+
+  function focusLocation(id) {
+    const loc = LOCATIONS[id];
+    if (!loc) return;
+    if (id === 'property') {
+      map.flyTo({
+        center: [loc.lngLat[0], loc.lngLat[1] - 0.0028],
+        zoom: 15.2, pitch: 66, bearing: 175,
+        duration: 1600, essential: true
+      });
+    } else {
+      const bounds = new mapboxgl.LngLatBounds(LOCATIONS.property.lngLat, loc.lngLat);
+      map.fitBounds(bounds, {
+        padding: { top: 90, bottom: 90, left: 90, right: 90 },
+        pitch: 58, bearing: map.getBearing(),
+        duration: 1400, essential: true, maxZoom: 16.5
+      });
+    }
+    document.querySelectorAll('.loc-item').forEach(it => {
+      it.classList.toggle('active', it.dataset.id === id);
+    });
+  }
+
+  document.querySelectorAll('.loc-item').forEach(item => {
+    item.addEventListener('click', () => focusLocation(item.dataset.id));
+  });
+
+  // ============ Scroll reveal ============
+  const revealSelectors = [
+    '.stats-grid .stat',
+    '.prop-head > div',
+    '.feature',
+    '.gallery-head > div',
+    '.g',
+    '.yield',
+    '.ipoint',
+    '.lead-card'
+  ];
+  const revealEls = [];
+  revealSelectors.forEach(sel => {
+    document.querySelectorAll(sel).forEach((el, i) => {
+      el.classList.add('reveal');
+      const group = el.parentElement;
+      const idx = Array.from(group.children).filter(c => c.classList.contains('reveal')).indexOf(el);
+      if (idx >= 0 && idx < 6) el.setAttribute('data-delay', String(idx));
+      revealEls.push(el);
+    });
+  });
+
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, { threshold: .12, rootMargin: '0px 0px -8% 0px' });
+    revealEls.forEach(el => io.observe(el));
+  } else {
+    revealEls.forEach(el => el.classList.add('in'));
+  }
+
+  // ============ Mortgage Calculator ============
+  const fmtGBP0 = n => '£' + Math.round(n).toLocaleString('en-GB');
+  const fmtGBPint = n => Math.round(n).toLocaleString('en-GB');
+
+  const mprice   = document.getElementById('mprice');
+  const mdeposit = document.getElementById('mdeposit');
+  const mrate    = document.getElementById('mrate');
+  const mterm    = document.getElementById('mterm');
+  const mpriceL  = document.getElementById('mpriceLabel');
+  const mdepositL = document.getElementById('mdepositLabel');
+  const mrateL   = document.getElementById('mrateLabel');
+  const mtermL   = document.getElementById('mtermLabel');
+  const mMonthly = document.getElementById('mMonthly');
+  const mLoanOut = document.getElementById('mLoan');
+
+  function recalcMortgage() {
+    const price = +mprice.value;
+    if (+mdeposit.value > price) { mdeposit.value = price; }
+    mdeposit.max = price;
+    const deposit = +mdeposit.value;
+    const ratePct = (+mrate.value) / 100;
+    const years = +mterm.value;
+    const loan = Math.max(0, price - deposit);
+    const r = ratePct / 100 / 12;
+    const n = years * 12;
+    let monthly;
+    if (loan === 0) { monthly = 0; }
+    else if (r === 0) { monthly = loan / n; }
+    else { monthly = loan * r * Math.pow(1+r, n) / (Math.pow(1+r, n) - 1); }
+    mpriceL.textContent   = fmtGBP0(price);
+    mdepositL.textContent = fmtGBP0(deposit) + ' · ' + Math.round(deposit/price*100) + '%';
+    mrateL.textContent    = ratePct.toFixed(2) + '%';
+    mtermL.textContent    = years + ' yrs';
+    mMonthly.textContent  = fmtGBPint(monthly);
+    mLoanOut.textContent  = fmtGBP0(loan);
+  }
+
+  ['input', 'change'].forEach(ev => {
+    [mprice, mdeposit, mrate, mterm].forEach(el => el.addEventListener(ev, recalcMortgage));
+  });
+  recalcMortgage();
+
+  // ============ UK Stamp Duty Calculator ============
+  const SDLT_BANDS = {
+    main: [
+      { upTo: 125000,  rate: 0.00 },
+      { upTo: 250000,  rate: 0.02 },
+      { upTo: 925000,  rate: 0.05 },
+      { upTo: 1500000, rate: 0.10 },
+      { upTo: Infinity, rate: 0.12 }
+    ],
+    ftb: [
+      { upTo: 300000,  rate: 0.00 },
+      { upTo: 500000,  rate: 0.05 },
+      { upTo: 925000,  rate: 0.05 },
+      { upTo: 1500000, rate: 0.10 },
+      { upTo: Infinity, rate: 0.12 }
+    ],
+    additional: [
+      { upTo: 125000,  rate: 0.05 },
+      { upTo: 250000,  rate: 0.07 },
+      { upTo: 925000,  rate: 0.10 },
+      { upTo: 1500000, rate: 0.15 },
+      { upTo: Infinity, rate: 0.17 }
+    ]
+  };
+
+  function calcSDLT(price, type) {
+    let bands = (type === 'ftb' && price > 500000) ? SDLT_BANDS.main : SDLT_BANDS[type];
+    let remaining = price, prev = 0, total = 0;
+    const rows = [];
+    for (const b of bands) {
+      if (remaining <= 0) break;
+      const slice = Math.min(price, b.upTo) - prev;
+      if (slice > 0) {
+        const tax = slice * b.rate;
+        total += tax;
+        rows.push({ from: prev, to: Math.min(price, b.upTo), rate: b.rate, tax });
+      }
+      remaining -= slice;
+      prev = b.upTo;
+    }
+    return { total, rows };
+  }
+
+  const sprice     = document.getElementById('sprice');
+  const spriceL    = document.getElementById('spriceLabel');
+  const sTotal     = document.getElementById('sTotal');
+  const sEffective = document.getElementById('sEffective');
+  const sBreakdown = document.getElementById('sBreakdown');
+  const sBuyerEls  = document.querySelectorAll('input[name="sBuyer"]');
+
+  function fmtBand(from, to) {
+    return '£' + (from/1000) + 'k–' + (to === Infinity ? '∞' : '£' + (to/1000) + 'k');
+  }
+
+  function recalcSDLT() {
+    const price = +sprice.value;
+    spriceL.textContent = fmtGBP0(price);
+    const buyer = [...sBuyerEls].find(el => el.checked).value;
+    const { total, rows } = calcSDLT(price, buyer);
+    sTotal.textContent = fmtGBPint(total);
+    sEffective.textContent = (price > 0 ? (total/price*100) : 0).toFixed(2) + '%';
+    sBreakdown.innerHTML = rows.map(r =>
+      `<div class="brow"><span>${fmtBand(r.from, r.to)} · ${(r.rate*100).toFixed(0)}%</span><span>${fmtGBP0(r.tax)}</span></div>`
+    ).join('') + `<div class="brow tot"><span>Total SDLT</span><span>${fmtGBP0(total)}</span></div>`;
+    if (buyer === 'ftb' && price > 500000) {
+      sBreakdown.innerHTML = `<div class="brow" style="color:#a0522d;font-style:italic"><span>First-time buyer relief unavailable above £500,000</span><span></span></div>` + sBreakdown.innerHTML;
+    }
+  }
+
+  sprice.addEventListener('input', recalcSDLT);
+  sBuyerEls.forEach(el => el.addEventListener('change', recalcSDLT));
+  recalcSDLT();
+</script>
+
+</body>
+</html>
