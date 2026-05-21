@@ -1548,17 +1548,6 @@
   });
   map.addControl(new mapboxgl.AttributionControl({ compact: true }), 'bottom-right');
 
-  let dashStep = 0;
-  const DASH_SEQUENCE = [
-    [0, 4, 3, 1, 1, 1],
-    [0.5, 4, 2.5, 1, 1, 1],
-    [1, 4, 2, 1, 1, 1],
-    [1.5, 4, 1.5, 1, 1, 1],
-    [2, 4, 1, 1, 1, 1],
-    [2.5, 4, 0.5, 1, 1, 1],
-    [3, 4, 0, 1, 1, 1]
-  ];
-
   const markers = {};
   map.on('style.load', () => {
     try {
@@ -1588,45 +1577,6 @@
       });
     }
 
-    const property = LOCATIONS.property.lngLat;
-    const routeFeatures = Object.entries(LOCATIONS)
-      .filter(([id]) => id !== 'property')
-      .map(([id, loc]) => ({
-        type: 'Feature',
-        properties: { id },
-        geometry: { type: 'LineString', coordinates: [property, loc.lngLat] }
-      }));
-
-    map.addSource('routes', {
-      type: 'geojson',
-      data: { type: 'FeatureCollection', features: routeFeatures }
-    });
-
-    map.addLayer({
-      id: 'routes-glow',
-      type: 'line',
-      source: 'routes',
-      layout: { 'line-cap': 'round', 'line-join': 'round' },
-      paint: { 'line-color': '#c9b99a', 'line-width': 6, 'line-opacity': 0.12, 'line-blur': 4 }
-    });
-
-    map.addLayer({
-      id: 'routes-dash',
-      type: 'line',
-      source: 'routes',
-      layout: { 'line-cap': 'round', 'line-join': 'round' },
-      paint: { 'line-color': '#c9b99a', 'line-width': 2, 'line-opacity': 0.85, 'line-dasharray': [0, 4, 3] }
-    });
-
-    function animateDash() {
-      if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-      dashStep = (dashStep + 1) % DASH_SEQUENCE.length;
-      if (map.getLayer('routes-dash')) {
-        map.setPaintProperty('routes-dash', 'line-dasharray', DASH_SEQUENCE[dashStep]);
-      }
-      setTimeout(animateDash, 90);
-    }
-    setTimeout(animateDash, 400);
 
     Object.entries(LOCATIONS).forEach(([id, loc]) => {
       const el = document.createElement('div');
