@@ -197,23 +197,25 @@
     animation: heroIn .9s .32s cubic-bezier(.2,.7,.2,1) forwards;
   }
   .rare-find {
-    display: inline-flex; align-items: center; gap: 12px;
-    border: 1px solid var(--cream);
-    background: rgba(201,185,154,.05);
-    padding: 9px 16px 9px 12px;
-    margin: 0 0 40px;
-    position: relative;
-    transform: translateY(8px);
+    position: absolute; top: 28px; right: 0; z-index: 4;
+    display: inline-flex; align-items: center; gap: 7px;
+    border: 1px solid rgba(201,185,154,.5);
+    background: rgba(10,10,22,.52);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    padding: 7px 14px 7px 9px;
+    border-radius: 100px;
+    cursor: default;
     opacity: 0;
     animation: rfIn .9s .5s cubic-bezier(.2,.7,.2,1) forwards;
+    font-family: inherit; font-size: inherit;
   }
   .rf-gem {
-    width: 30px; height: 30px;
+    width: 20px; height: 20px;
     display: flex; align-items: center; justify-content: center; flex-shrink: 0;
     position: relative;
   }
   .rf-gem svg {
-    width: 18px; height: 18px; stroke: var(--cream); fill: none;
+    width: 13px; height: 13px; stroke: var(--cream); fill: none;
     stroke-width: 1.4; stroke-linejoin: round; stroke-linecap: round;
     transform-origin: 50% 50%;
     animation: rfGemBreathe 2.8s ease-in-out infinite;
@@ -222,28 +224,42 @@
   .rf-gem::after,
   .rf-spark {
     content: ""; position: absolute; background: var(--cream);
-    width: 3px; height: 3px; border-radius: 50%;
-    opacity: 0;
+    width: 2.5px; height: 2.5px; border-radius: 50%; opacity: 0;
   }
-  .rf-gem::before {
-    top: 0; right: -1px;
-    animation: rfSparkle 2.4s 0s ease-in-out infinite;
-  }
-  .rf-gem::after {
-    bottom: 1px; left: -2px; width: 2.5px; height: 2.5px;
-    animation: rfSparkle 2.4s .8s ease-in-out infinite;
-  }
-  .rf-spark {
-    top: 50%; right: -4px; width: 2px; height: 2px;
-    animation: rfSparkle 2.4s 1.6s ease-in-out infinite;
-  }
-  .rf-copy { display: flex; flex-direction: column; line-height: 1; }
+  .rf-gem::before { top: 0; right: -1px; animation: rfSparkle 2.4s 0s ease-in-out infinite; }
+  .rf-gem::after  { bottom: 1px; left: -2px; width: 2px; height: 2px; animation: rfSparkle 2.4s .8s ease-in-out infinite; }
+  .rf-spark       { top: 50%; right: -3px; width: 2px; height: 2px; animation: rfSparkle 2.4s 1.6s ease-in-out infinite; }
   .rf-title {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 15px; font-weight: 600; font-style: italic;
-    color: var(--cream); letter-spacing: .015em; line-height: 1; margin-bottom: 4px;
+    font-size: 13px; font-weight: 600; font-style: italic;
+    color: var(--cream); letter-spacing: .02em; line-height: 1; white-space: nowrap;
   }
-  .rf-sub { font-size: 11px; color: #9a917a; letter-spacing: .04em; line-height: 1.35; }
+  .rf-tooltip {
+    position: absolute; top: calc(100% + 10px); right: 0;
+    background: rgba(10,10,22,.92);
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(201,185,154,.22);
+    color: rgba(201,185,154,.82);
+    font-family: 'Jost', sans-serif; font-size: 11px; font-weight: 300;
+    letter-spacing: .05em; line-height: 1.55;
+    padding: 10px 14px; border-radius: 8px;
+    width: 240px; white-space: normal;
+    opacity: 0; pointer-events: none;
+    transform: translateY(-5px);
+    transition: opacity .22s ease, transform .22s ease;
+  }
+  .rare-find:hover .rf-tooltip,
+  .rare-find:focus-visible .rf-tooltip,
+  .rare-find.open .rf-tooltip { opacity: 1; transform: translateY(0); }
+  @media (hover: none) {
+    /* On touch devices show tooltip on tap via JS .open class */
+    .rare-find { cursor: pointer; }
+  }
+  @media (max-width: 720px) {
+    .rare-find { top: 20px; right: 0; padding: 6px 12px 6px 8px; gap: 6px; }
+    .rf-title { font-size: 12px; }
+    .rf-tooltip { width: 210px; font-size: 10.5px; }
+  }
   .hero-foot {
     display: flex; align-items: flex-end; justify-content: space-between; gap: 32px;
     padding-top: 36px; border-top: 1px solid rgba(201,185,154,.22);
@@ -269,9 +285,8 @@
     .hero p.lede { margin-bottom: 40px; }
   }
   @media (max-width: 560px) {
-    .rare-find { padding: 8px 14px 8px 10px; gap: 10px; margin-bottom: 32px; }
-    .rf-title { font-size: 14px; }
-    .rf-sub { font-size: 10.5px; }
+    .rare-find { padding: 6px 12px 6px 8px; gap: 5px; }
+    .rf-title { font-size: 11px; }
   }
 
   /* ============ STATS BAR ============ */
@@ -902,7 +917,7 @@
       a world away from the ordinary.
     </p>
 
-    <div class="rare-find" aria-label="Rare find">
+    <button class="rare-find" aria-label="A Rare Find — Apartments of this calibre on West Cliff Road list infrequently." tabindex="0">
       <div class="rf-gem" aria-hidden="true">
         <svg viewBox="0 0 24 24">
           <path d="M6 9.5l3-5h6l3 5-6 10z"></path>
@@ -913,11 +928,9 @@
         </svg>
         <span class="rf-spark"></span>
       </div>
-      <div class="rf-copy">
-        <div class="rf-title">A Rare Find</div>
-        <div class="rf-sub">Apartments of this calibre on West Cliff Road list infrequently.</div>
-      </div>
-    </div>
+      <span class="rf-title">A Rare Find</span>
+      <span class="rf-tooltip">Apartments of this calibre on West Cliff Road list infrequently.</span>
+    </button>
 
     <div class="hero-foot">
       <div>
@@ -1782,6 +1795,20 @@
   sprice.addEventListener('input', recalcSDLT);
   sBuyerEls.forEach(el => el.addEventListener('change', recalcSDLT));
   recalcSDLT();
+
+  /* ── Rare Find pill: tap-to-toggle tooltip on touch devices ── */
+  const rfBtn = document.querySelector('.rare-find');
+  if (rfBtn) {
+    rfBtn.addEventListener('click', function(e) {
+      // Only toggle on touch; hover handles it on pointer devices
+      if (window.matchMedia('(hover: none)').matches) {
+        this.classList.toggle('open');
+        e.stopPropagation();
+      }
+    });
+    // Dismiss when tapping elsewhere
+    document.addEventListener('click', () => rfBtn.classList.remove('open'));
+  }
 </script>
 
 </body>
